@@ -1,0 +1,10 @@
+.container h1 {
+  padding: 2rem;
+  text-align: center;
+}
+.home {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
