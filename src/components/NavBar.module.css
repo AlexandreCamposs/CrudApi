@@ -13,12 +13,17 @@ nav ul {
 nav ul li {
   list-style: none;
   margin-right: 0.7rem;
-  border: 1px solid #fff;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 0.4rem 0.8rem;
 }
-
+.active {
+  background-color: #fff;
+  color: #000;
+}
 a {
   color: #fff;
   text-decoration: none;
+  padding: 0.5rem 0.8rem;
+  transition: 0.8s;
+  border-radius: 5px;
 }

@@ -8,24 +8,32 @@ const Home = () => {
   const getUsers = async () => {
     try {
       const res = await fetch('https://reqres.in/api/users?page=2');
-      // console.log(res);
       const data = await res.json();
-      // console.log(data);
-      setUsers(data.data);
-      // console.log(users);
-    } catch (error) {
-      // console.log(error);
-    }
+      // setUsers(data.data);
+      const filteredUsers = data.data.filter((user) => !user.deleted);
+      setUsers(filteredUsers);
+    } catch (error) {}
   };
   useEffect(() => {
     getUsers();
   }, []);
-  // console.log(users);
+
+  const handleUserDelete = (deletedUserId) => {
+    const updatedUsers = users.filter((user) => user.id !== deletedUserId);
+    setUsers(updatedUsers);
+  };
   return (
     <div className={styles.container}>
       <h1>Home</h1>
       <div className={styles.home}>
-        {users && users.map((user) => <Card user={user} key={user.id} />)}
+        {users &&
+          users.map((user) => (
+            <Card
+              user={user}
+              key={user.id}
+              handleUserDelete={handleUserDelete}
+            />
+          ))}
       </div>
     </div>
   );

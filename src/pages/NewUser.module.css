@@ -5,6 +5,8 @@
 .container h2 {
   padding: 2rem;
   text-align: center;
+  color: #f70015;
+  font-weight: bold;
 }
 
 .container {
