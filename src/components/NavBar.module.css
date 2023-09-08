@@ -8,6 +8,7 @@
 }
 nav ul {
   display: flex;
+  align-items: center;
 }
 
 nav ul li {
@@ -26,4 +27,10 @@ a {
   padding: 0.5rem 0.8rem;
   transition: 0.8s;
   border-radius: 5px;
+}
+
+@media (max-width: 410px) {
+  .container {
+    padding: 0.5rem;
+  }
 }
