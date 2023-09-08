@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import styles from './Card.module.css';
 import Button from './Button';
+import Message from './Message.jsx';
+import message from './Message.module.css';
 
 const Modal = ({ user, handleUserDelete }) => {
   const [users, setUsers] = useState([user]);
 
   const [editing, setEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({ ...user });
+  const [messageSucess, setMessageSucess] = useState('');
+
+  const resetMessage = setTimeout(() => {
+    setMessageSucess('');
+  }, 2000);
 
   const deleteUser = async (id) => {
     try {
@@ -25,11 +32,6 @@ const Modal = ({ user, handleUserDelete }) => {
     handleUserDelete(id);
 
     setUsers(updateUser);
-
-    setMessageSucess('Usuário deletado');
-    setTimeout(() => {
-      setMessageSucess('');
-    }, 3000);
   };
 
   const updateUser = async (id) => {
@@ -62,9 +64,8 @@ const Modal = ({ user, handleUserDelete }) => {
 
     setEditing(false);
     setMessageSucess('Usuário atualizado');
-    setTimeout(() => {
-      setMessageSucess('');
-    }, 3000);
+
+    resetMessage();
   };
 
   const handleInputChange = (e) => {
@@ -88,7 +89,7 @@ const Modal = ({ user, handleUserDelete }) => {
             />
           ) : (
             user.first_name
-          )}{' '}
+          )}
           {editing ? (
             <input
               type="text"
@@ -118,6 +119,9 @@ const Modal = ({ user, handleUserDelete }) => {
               Deletar
             </Button>
           </div>
+          {messageSucess && (
+            <Message type={message.success} message={messageSucess} />
+          )}
         </div>
       ))}
     </div>

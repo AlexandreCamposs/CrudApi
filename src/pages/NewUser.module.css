@@ -2,12 +2,6 @@
   padding: 2rem;
   text-align: center;
 }
-.container h2 {
-  padding: 2rem;
-  text-align: center;
-  color: #f70015;
-  font-weight: bold;
-}
 
 .container {
   display: flex;

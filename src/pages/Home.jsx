@@ -12,14 +12,16 @@ const Home = () => {
       // setUsers(data.data);
       const filteredUsers = data.data.filter((user) => !user.deleted);
       setUsers(filteredUsers);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     getUsers();
   }, []);
 
-  const handleUserDelete = (deletedUserId) => {
-    const updatedUsers = users.filter((user) => user.id !== deletedUserId);
+  const handleUserDelete = (id) => {
+    const updatedUsers = users.filter((user) => user.id !== id);
     setUsers(updatedUsers);
   };
   return (

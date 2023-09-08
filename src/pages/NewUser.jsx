@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styles from './NewUser.module.css';
 import Button from '../components/Button';
+import Message from '../components/Message.jsx';
+import messageStyle from '../components/Message.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const NewUser = () => {
   const [user, setUser] = useState({
@@ -8,7 +11,7 @@ const NewUser = () => {
     password: '',
     confirmPassword: '',
   });
-  const [messageSucess, setMessageSucess] = useState('');
+  const [messageSucess, setMessageSuccess] = useState('');
   const [messageError, setMessageError] = useState('');
 
   const handleChange = (e) => {
@@ -42,44 +45,62 @@ const NewUser = () => {
     return emailRegex.test(email);
   };
 
-  const handleNewUser = async (e) => {
-    e.preventDefault();
-
-    if (user.password === '' || user.confirmPassword === '') {
-      setMessageError('Preencha o campo senha');
-    }
-
-    if (user.password !== user.confirmPassword) {
-      setMessageError('As senhas precisam ser iguais');
-
-      setTimeout(() => {
-        setMessageError('');
-      }, 2000);
-      return;
+  const validateForm = () => {
+    if (user.email === '') {
+      showMessage('Insira o email', 'error');
+      return false;
     }
 
     if (!validateEmail(user.email)) {
-      setMessageError('Insira um email válido');
-      setTimeout(() => {
-        setMessageError('');
-      }, 2000);
+      showMessage('Insira um email válido', 'error');
+      return false;
+    }
+    if (user.password === '' || user.confirmPassword === '') {
+      showMessage('Preencha o campo senha', 'error');
+      return false;
+    }
+
+    if (user.password !== user.confirmPassword) {
+      showMessage('As senhas precisam ser iguais', 'error');
+      return false;
+    }
+    return true;
+  };
+
+  const handleNewUser = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
       return;
     }
 
     try {
       const data = await newUser();
       if (data.error) {
-        setMessageError('Erro na criação do usuário');
+        showMessage('Erro na criação do usuário', 'error');
       } else {
-        setMessageSucess('Parabéns usuário criado com sucesso.');
+        showMessage('Parabéns usuário criado com sucesso.', 'success');
+        setUser({
+          email: '',
+          password: '',
+          confirmPassword: '',
+        });
       }
     } catch (error) {
-      setMessageError('Erro na criação do usuário');
+      console.log('Erro na criação do usuário');
+    }
+  };
+
+  const showMessage = (message, type) => {
+    if (type === 'error') {
+      setMessageError(message);
+    } else if (type === 'success') {
+      setMessageSuccess(message);
     }
 
     setTimeout(() => {
       setMessageError('');
-      setMessageSucess('');
+      setMessageSuccess('');
     }, 2000);
   };
 
@@ -94,6 +115,7 @@ const NewUser = () => {
             name="email"
             placeholder="E-mail"
             onChange={handleChange}
+            value={user.email}
           />
         </label>
         <label>
@@ -103,6 +125,7 @@ const NewUser = () => {
             name="password"
             placeholder="Senha"
             onChange={handleChange}
+            value={user.password}
           />
         </label>
         <label>
@@ -112,12 +135,17 @@ const NewUser = () => {
             name="confirmPassword"
             placeholder="Senha"
             onChange={handleChange}
+            value={user.confirmPassword}
           />
         </label>
         <Button type="submit">Criar</Button>
       </form>
-      {messageError && <h2>{messageError}</h2>}
-      {messageSucess && <h2>{messageSucess}</h2>}
+      {messageError && (
+        <Message type={messageStyle.error} message={messageError} />
+      )}
+      {messageSucess && (
+        <Message type={messageStyle.success} message={messageSucess} />
+      )}
     </div>
   );
 };

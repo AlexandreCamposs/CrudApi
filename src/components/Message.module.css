@@ -1,0 +1,11 @@
+.success {
+  margin-top: 2rem;
+  color: #06f708;
+}
+
+.error {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: #f70015;
+  font-weight: bold;
+}
